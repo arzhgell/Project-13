@@ -110,12 +110,138 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
+  /accounts:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Accounts Module
+      summary: Accounts API
+      description: API for fetching a user's accounts
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Accounts retrieved successully
+          schema:
+            $ref: '#/definitions/AccountList'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /account/:id/transactions:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Accounts Module
+      summary: Account transactions API
+      description: API for fetching a account's transactions
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+        - in: endpoints
+          name: id
+          description: Account ID
+          required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Transactions retrieved successully
+          schema:
+            $ref: '#/definitions/TransactionList'
+        '400':
+          description: Invalid Fields
+        '404':
+          description: Account not found
+        '500':
+          description: Internal Server Error
+  /transactions/:id:
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - Accounts Module
+      summary: Transactions API
+      description: API for update transaction
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+        - in: endpoints
+          name: id
+          description: Transaction ID
+          required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Transactions updated successully
+          schema:
+            $ref: '#/definitions/Transaction'
+        '400':
+          description: Invalid Fields
+        '404':
+          description: Transaction not found
+        '500':
+          description: Internal Server Error
 securityDefinitions:
   Bearer:
     type: apiKey
     name: Authorization
     in: header
 definitions:
+  Account:
+    properties:
+      id: 
+        type: string
+        description: account id
+      name:
+        type: string
+        description: account name
+      amount:
+        type: number
+        description: account amount
+  AccountList:
+    type: array
+    items:
+      $ref: '#/definitions/Account'
+  Transaction:
+    properties:
+      id: 
+        type: string
+        description: transaction id
+      amount:
+        type: number
+        description: transaction amount
+      description:
+        type: string
+        description: transaction description
+      date:
+        type: string
+        description: transaction date
+      balance:
+        type: number
+        description: transaction balance
+      category:
+        type: string
+        description: transaction category
+      notes:
+        type: string
+        description: transaction notes
+  TransactionList:
+    type: array
+    items:
+      $ref: '#/definitions/Transaction'
   User:
     properties:
       email:

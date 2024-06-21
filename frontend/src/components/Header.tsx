@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import logo from "@assets/illustrations/argentBankLogo.png";
 import { GlobalContext } from "src/Router";
 import { useNavigate } from "react-router-dom";
+import { deleteCookie } from "@tools/Cookies";
 
 export function Header() {
 	const { user } = useContext(GlobalContext);
@@ -12,7 +13,18 @@ export function Header() {
 		<div className="flex justify-between py-1 px-5 items-center">
 			<img src={logo} alt="" className="w-[200px]" />
 			{user ? (
-				<div>Logged</div>
+				<div className="flex gap-2">
+					<p>{user.firstName}</p>
+					<button
+						type="button"
+						onClick={() => {
+							deleteCookie("token");
+							window.location.reload();
+						}}
+					>
+						Sign Out
+					</button>
+				</div>
 			) : (
 				<div
 					onClick={() => {
